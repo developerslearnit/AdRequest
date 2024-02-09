@@ -1,0 +1,142 @@
+﻿<!--------------------
+START - Main Menu
+-------------------->
+@{
+    var isInRole = User.IsInRole("Management");
+}
+<div id="sideMenu" class="menu-w color-scheme-dark color-style-bright menu-position-side menu-side-left menu-layout-full sub-menu-style-over sub-menu-color-bright selected-menu-color-light menu-activated-on-hover menu-has-selected-link">
+    <div class="logo-w">
+        <a class="logo" href="@Url.Action("dashboard","home")">
+            <div class="logo-elemen">
+                <img style="width:100px" alt="logo" src="~/assets/img/logo.png">
+            </div>
+            <div class="logo-label">
+                Admon ERP MIS
+            </div>
+        </a>
+    </div>
+
+    <h1 class="menu-page-header">
+        Page Header
+    </h1>
+    <ul class="main-menu">
+        <li class="sub-header">
+            <span>Menus</span>
+        </li>
+        <li class="selected">
+            <a href="@Url.Action("index","home",new{area=""})">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-layout"></div>
+                </div>
+                <span>Dashboard</span>
+            </a>
+
+        </li>
+        <li class="">
+            <a href="@Url.Action("index","useraccount",new { area = "" })">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-users"></div>
+                </div>
+                <span>User Management</span>
+            </a>
+
+        </li>
+
+        <li class="">
+            <a href="@Url.Action("requestTypes","Setup",new { area = "" })">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-layers"></div>
+                </div>
+                <span>Request Types</span>
+            </a>
+
+        </li>
+        <li class="">
+            <a href="@Url.Action("index","AppRequest",new { area = "" })">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-edit-32"></div>
+                </div>
+                <span>Staff Request</span>
+            </a>
+        </li>
+        @if (User.IsInRole("Management"))
+        {
+            <li class="">
+                <a href="@Url.Action("RequestApproval","AppRequest",new { area = "" })">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-tasks-checked"></div>
+                    </div>
+                    <span>Management Approvals </span>
+                </a>
+            </li>
+        }
+        <li class="">
+            <a href="@Url.Action("RealtorsRegistration","AppRequest",new { area = "" })">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-edit-32"></div>
+                </div>
+                <span>Realtor's registration</span>
+            </a>
+        </li>
+        <li class="has-sub-menu">
+            <a href="#">
+                <div class="icon-w">
+                    <div class="os-icon os-icon-grid"></div>
+                </div>
+                <span>Reports</span>
+            </a>
+            <div class="sub-menu-w">
+                <div class="sub-menu-header">
+                    Reports
+                </div>
+                <div class="sub-menu-icon">
+                    <i class="os-icon os-icon-grid"></i>
+                </div>
+
+                <div class="sub-menu-i">
+                    <ul class="sub-menu">
+                        <li>
+                            <a asp-action="RequestReport" asp-controller="Report">Payment Request Report</a>
+                        </li>
+                        <li>
+                            <a asp-action="BudgetSummary" asp-controller="Report">Project Budget Summary</a>
+                        </li>
+                        <li>
+                            <a asp-action="LedgerReport" asp-controller="Report">Project Ledger Report</a>
+                        </li>
+                        <li>
+                            <a asp-action="SubscriberAccountDetails" asp-controller="Report">Subscriber Account Details</a>
+                        </li>
+                        <li>
+                            <a asp-action="ConsolidatedAccountDetails" asp-controller="Report">Consolidated Account Details</a>
+                        </li>
+                        <li>
+                            <a asp-action="BudgetSummaryAndAmountExpended" asp-controller="Report">Budget Summary &amp; Amount Expended</a>
+                        </li>
+                        <li>
+                            <a asp-action="TrialBalance" asp-controller="Report">Trial Balance</a>
+                        </li>
+                        <li>
+                            <a asp-action="FinancialPerfomance" asp-controller="Report">Statement of Financial Performance</a>
+                        </li>
+                        <li>
+                            <a asp-action="ProjectIncome" asp-controller="Report">Project Income</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </li>
+    </ul>
+
+    <div style="background-image:none !important;background-color:#fff;padding:20px;position:fixed;bottom:5px" class="side-menu-magic">
+        <div class="">
+            <h6 style="color:#000;margin-bottom:30px">Registered to</h6>
+            <img src="/assets/img/metro-logo.jpg" width="150" />
+        </div>
+    </div>
+
+   
+</div>
+<!--------------------
+END - Main Menu
+-------------------->

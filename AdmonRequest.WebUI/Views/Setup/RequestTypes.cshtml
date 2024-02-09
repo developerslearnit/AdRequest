@@ -1,0 +1,307 @@
+﻿@{
+    ViewData["Title"] = "Request Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Request Types
+        <a style="margin:5px 0 8px 0;float:right" href="#" id="newRecordBtn" class="btn btn-sm btn-primary btn-upper">
+            <i class="os-icon os-icon-ui-22"></i><span>Add New</span>
+        </a>
+    </h6>
+
+    <div class="element-box">
+
+        <div class="row">
+            <div class="table-responsive">
+                <table cellspacing="0" width="100%" class="table table-v2 table-bordered table-striped " id="reqTypeTable" style="width: 100%;">
+                    <thead class="">
+                        <tr>
+                            <th>Request Type</th>
+                            <th>Reduce Budget</th>
+                            <th>Is Advance</th>
+                            <th>Is Project</th>
+                            <th>Is Direct Payment</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-center-c onboarding-modal" id="requestTypeModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    New Request Type
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body onboarding-content with-gradient">
+
+                <div class="form-horizontal">
+                    <input type="hidden" id="hidRequestTypeId" value="" />
+                    <div class="form-group">
+                        <label>
+                            Request Type Name
+                        </label>
+                        <input type="text" name="requestTypeName" id="requestTypeName" class="form-control" />
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div style="padding:10px 0" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="activeStatus" type="checkbox" />Status
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                        </div>
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div style="padding:10px 0" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="reduceBudget" type="checkbox" />Reduce Budget
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="padding:10px 0" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="isAdvance" type="checkbox" />Is Advance
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div style="padding:10px 0" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="isProject" type="checkbox" />Is Project
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="padding:10px 0" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="isDirectPayment" type="checkbox" />Is DirectPayment
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-bold btn-pure btn-danger" data-dismiss="modal">Close</button>
+                    <button id="saveBtn" type="button" class="btn btn-bold btn-pure btn-primary">Save Request Type</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+
+
+            var table = $("#reqTypeTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                //"dom": '<"top"i>rt<"bottom"lp><"clear">',
+                "ajax": {
+                    "url": '@Url.Action("ListAllRequestTypes", "setup",new { area = "" })',
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "name", "name": "name", "autoWidth": true },
+                    { "data": "reduceBudget", "name": "reduceBudget", "autoWidth": true },
+                    { "data": "advance", "name": "advance", "autoWidth": true },
+                    { "data": "project", "name": "project", "autoWidth": true },
+                    { "data": "directPay", "name": "directPay", "autoWidth": true },
+                    { "data": "isActive", "name": "isActive", "autoWidth": true },
+                    { "data": null, "name": "Action", "defaultContent": '<a class="editItem" href="#"> <i class="os-icon os-icon-ui-49"></i></a>', "autoWidth": true }
+
+                ],
+                createdRow: function (row, data, dataIndex) {
+                    // console.log(row);
+                    // $(row).find("td").addClass('text-center');
+                }
+
+            });
+
+            $('.search-input').on('keyup change', function () {
+                var index = $(this).attr('data-column'),
+                    val = $(this).val();
+                table.columns(index).search(val.trim()).draw();
+            });
+
+
+            function clearCtrl() {
+                $("#requestTypeName").val('');
+                $("#activeStatus").prop('checked', false);
+                $("#reduceBudget").prop('checked', false);
+                $("#isAdvance").prop('checked', false);
+                $("#isProject").prop('checked', false);
+                $("#isDirectPayment").prop('checked', false);
+                $("#hidRequestTypeId").val('');
+            }
+
+
+            $("#newRecordBtn").click(function (e) {
+                e.preventDefault();
+                clearCtrl();
+                
+                $(".modal-title").html("Add New Request Type");
+                $("#requestTypeModal").modal('show');
+            });
+
+          
+
+
+            $(document).on("click", "#reqTypeTable tbody tr td a.editItem", function (e) {
+                e.preventDefault();
+                var data = table.row($(this).parents('tr')).data();
+                clearCtrl();
+                
+                $(".modal-title").html("Update Request Type");
+                $("#hidRequestTypeId").val(data.requestTypeId);
+                $("#requestTypeName").val(data.name);
+                $("#activeStatus").prop('checked', data.status);
+                $("#reduceBudget").prop('checked', data.reduceBuget);
+                $("#isAdvance").prop('checked', data.isAdvance);
+                $("#isProject").prop('checked', data.isProject);
+                $("#isDirectPayment").prop('checked', data.isDirectPayment);
+                $("#requestTypeModal").modal('show');              
+            
+            })
+
+            $("#saveBtn").click(function (e) {
+                e.preventDefault();
+
+                var addUrl = "@Url.Action("AddRequestTypes", "setup",new { area=""})";
+
+                if ($.trim($("#requestTypeName").val()) == '') {
+
+
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: 'Request Type Name fields are required!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+
+                var $self = $(this);
+                SiteUtils.loading();
+                $self.attr('disabled', true).html("Wait...");
+
+                var data = {
+                    RequestTypeId: $("#hidRequestTypeId").val(),
+                    Name: $("#requestTypeName").val(),
+                    Status: $("#activeStatus").prop('checked'),
+                    ReduceBuget: $("#reduceBudget").prop('checked'),
+                    IsAdvance: $("#isAdvance").prop('checked'),
+                    IsProject: $("#isProject").prop('checked'),
+                    IsDirectPayment: $("#isDirectPayment").prop('checked'),
+                };
+
+
+                $.when(SiteUtils.post(data, addUrl)).done(function (response) {
+                    if (response.error == false) {
+                        $self.attr('disabled', false).html("Save Request Type");
+                        SiteUtils.loadingOff();
+                        clearCtrl();
+                        table.draw();
+                        $.confirm({
+                            title: 'Mandate Success !',
+                            content: response.message,
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    } else {
+                        SiteUtils.loadingOff();
+                        $self.attr('disabled', false).html("Save Request Type");
+
+                        $.confirm({
+                            title: 'Error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+
+                    SiteUtils.loadingOff();
+                    $self.attr('disabled', false).html("Save Request Type");
+                    $.confirm({
+                        title: 'Error!',
+                        content: 'A network related error has occured',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                });
+
+            });
+
+        });
+
+    </script>
+
+
+
+
+}

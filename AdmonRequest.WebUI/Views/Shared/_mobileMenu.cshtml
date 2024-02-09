@@ -1,0 +1,109 @@
+﻿<!--------------------
+        START - Mobile Menu
+-------------------->
+<div class="menu-mobile menu-activated-on-click color-scheme-dark">
+    <div class="mm-logo-buttons-w">
+        <a class="mm-logo" href="@Url.Action("dashboard","home",new { area = "" })"><img src="~/assets/img/logo.png"><span>Admon ERP MIS</span></a>
+        <div class="mm-buttons">
+            <div class="content-panel-open">
+                <div class="os-icon os-icon-grid-circles"></div>
+            </div>
+            <div class="mobile-menu-trigger">
+                <div class="os-icon os-icon-hamburger-menu-1"></div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-and-user">
+       <!--------------------
+        START - Mobile Menu List
+        -------------------->
+        <ul class="main-menu">
+            <li class="selected">
+                <a href="@Url.Action("index","home",new { area = "" })">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-layout"></div>
+                    </div>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="">
+                <a href="@Url.Action("requestTypes","Setup",new { area = "" })">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-layers"></div>
+                    </div>
+                    <span>Request Types</span>
+                </a>
+
+            </li>
+            <li class="">
+                <a href="@Url.Action("index","AppRequest",new { area = "" })">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-edit-32"></div>
+                    </div>
+                    <span>Staff Request</span>
+                </a>
+
+            </li>
+            @if (User.IsInRole("Management"))
+            {
+                <li class="">
+                    <a href="@Url.Action("RequestApproval","AppRequest",new { area = "" })">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-tasks-checked"></div>
+                        </div>
+                        <span>Request Approvals </span>
+                    </a>
+                </li>
+            }
+            <li class="has-sub-menu">
+                <a href="#">
+                    <div class="icon-w">
+                        <div class="os-icon os-icon-grid"></div>
+                    </div>
+                    <span>Reports</span>
+                </a>
+                <div class="sub-menu-w">                    
+                    <div class="sub-menu-i">
+                        <ul class="sub-menu">
+                            <li>
+                                <a asp-action="RequestReport" asp-controller="Report">Payment Request Report</a>
+                            </li>
+                            <li>
+                                <a asp-action="BudgetSummary" asp-controller="Report">Project Budget Summary</a>
+                            </li>
+                            <li>
+                                <a asp-action="LedgerReport" asp-controller="Report">Project Ledger Report</a>
+                            </li>
+                            <li>
+                                <a asp-action="SubscriberAccountDetails" asp-controller="Report">Subscriber Account Details</a>
+                            </li>
+                            <li>
+                                <a asp-action="ConsolidatedAccountDetails" asp-controller="Report">Consolidated Account Details</a>
+                            </li>
+                            <li>
+                                <a asp-action="BudgetSummaryAndAmountExpended" asp-controller="Report">Budget Summary &amp; Amount Expende</a>
+                            </li>
+                            <li>
+                                <a asp-action="TrialBalance" asp-controller="Report">Trial Balance</a>
+                            </li>
+                            <li>
+                                <a asp-action="FinancialPerfomance" asp-controller="Report">Statement of Financial Performance</a>
+                            </li>
+                            <li>
+                                <a asp-action="ProjectIncome" asp-controller="Report">Project Income</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+        <!--------------------
+        END - Mobile Menu List
+        -------------------->
+    
+    </div>
+</div>
+<!--------------------
+END - Mobile Menu
+-------------------->

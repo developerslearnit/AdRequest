@@ -1,0 +1,679 @@
+﻿@{
+    ViewData["Title"] = "Staff Request";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Staff Requests
+        <a style="margin:5px 0 8px 0;float:right" href="#" id="newRecordBtn" class="btn btn-sm btn-primary btn-upper">
+            <i class="os-icon os-icon-ui-22"></i><span>Add New</span>
+        </a>
+    </h6>
+
+    <div class="element-box">
+        <div style="margin-bottom:0 !important" class="controls-above-table">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a id="downloadXcelBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-excel-o"></i> <span style="margin-left:7px">Download Excel</span></a>
+                    <a id="downloadPdfBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-pdf-o"></i> <span style="margin-left:7px"> Donwload Pdf</span></a>
+                </div>
+                <div class="col-sm-6">
+                  
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table cellspacing="0" width="100%" class="table table-v2 table-bordered table-striped " id="requestTable" style="width: 100%;">
+                    <thead class="">
+                        <tr>
+                            <th>Request Type</th>
+                            <th>Beneficiary</th>
+                            <th>Department Unit</th>
+                            <th>Ref No</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Request Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <thead id="searchHeader">
+                        <tr>
+                            <th><input class="form-control search-input" data-column="1" type="text"></th>
+                            <th><input class="form-control search-input" data-column="2" type="text"></th>
+                            <th><input class="form-control search-input" data-column="3" type="text"></th>
+                            <th><input class="form-control search-input" data-column="4" type="text"></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-center-c onboarding-modal" id="requestModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    New Request
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body onboarding-content with-gradient">
+                <div class="form-horizontal">
+                    <input type="hidden" id="paymentRequestId" value="" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Request Type
+                                </label>
+                                @Html.DropDownList("requestTypeDropDown",(SelectList)ViewBag.RequestTypes,"Select Request Type",new{@class="form-control", style="width: 100%"})
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Beneficiary Name
+                                </label>
+                                @Html.DropDownList("beneficiaryDropDown",(SelectList)ViewBag.Beneficiaries,"Select Beneficiary",new{@class="form-control", style="width: 100%"})
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Request Date
+                                </label>
+                                <div class="date-input">
+                                    <input class="single-daterange form-control" id="requestDate" type="text">
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Budget Category
+                                </label>
+                                @Html.DropDownList("budgetCatDropDown",(SelectList)ViewBag.BudgetCat,"Select Budget Category",new{@class="form-control", style="width: 100%"})
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Budget Year
+                                </label>
+                                @Html.DropDownList("budgetYearDropDown",(SelectList)ViewBag.BudgetYear,"Select Budget Year",new{@class="form-control", style="width: 100%"})
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Budget Period
+                                </label>
+                                <select id="budgetPeriodDropDown" class="form-control"></select>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Department
+                                </label>
+                                @Html.DropDownList("departmentDropDown",(SelectList)ViewBag.Departments,"Select Department",new{@class="form-control", style="width: 100%"})
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Sub-Unit
+                                </label>
+                                <select id="subUnitDropDown" style="width:100%" class="form-control"></select>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Vote Type
+                                </label>
+                                <select id="voteTypeDropDown" style="width:100%" class="form-control">
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>
+                                Amount
+                            </label>
+                            <input type="text" name="amount" id="amount" class="form-control" />
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-9">
+                            <label>
+                                Description
+                            </label>
+                            <textarea rows="3" spellcheck="false" name="description" id="description" class="form-control"></textarea>
+                        </div>
+
+                        <div style="padding-top:25px" class="col-md-3">
+                            <div style="display:flex;flex-direction:column">
+                                <label>
+                                    Attach Document
+                                </label>
+
+                                <input accept="image/jpg,image/png,image/jpeg,application/pdf" style="display:none" type="file" name="requestDocFile" id="requestDocFile" />
+                                <button id="docUploadBtn" class="btn btn-outline-secondary" type="button">
+                                    <i class="fa fa-download"></i>
+                                    <span style="margin-left:10px">Choose File</span>
+                                </button>
+                                <span style="margin-top:5px;font-size:11px" id="file-chosen">No file chosen</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+              
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-bold btn-pure btn-danger" data-dismiss="modal">Close</button>
+                    <button id="saveButton" type="button" class="btn btn-bold btn-pure btn-primary">Save Request</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+@section scripts{
+
+    <script>
+
+        
+
+        $(function () {
+
+            $("#requestTypeDropDown,#departmentDropDown,#budgetCatDropDown,#budgetYearDropDown,#beneficiaryDropDown").select2();
+
+            $("#newRecordBtn").click(function (e) {
+                e.preventDefault();
+                $(".modal-title").text("Add New Request");
+                $("#paymentRequestId").val('');
+                $("#requestTypeDropDown").val(null).trigger('change');
+                $("#beneficiaryDropDown").val(null).trigger('change');
+                $("#requestDate").val('');
+                $("#budgetPeriodDropDown").val(null).trigger('change');
+                $("#amount").val('');
+                $("#description").val('');
+                $("#requestModal").modal('show');
+            });
+
+
+            var table = $("#requestTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                //"dom": '<"top"i>rt<"bottom"lp><"clear">',
+                "order": [[6, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Export excel',
+                        className: 'exportExcel',
+                        filename: 'payment_request',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Export pdf',
+                        className: 'exportPdf',
+                        filename: 'payment_request',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                ],
+                "ajax": {
+                    "url": '@Url.Action("ListAllPaymentRequest", "AppRequest",new { area = "" })',
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "requestType", "name": "requestType", "autoWidth": true },
+                    { "data": "beneficiary", "name": "beneficiary", "autoWidth": true },
+                    { "data": "subDepartment", "name": "subDepartment", "autoWidth": true },
+                    { "data": "refNo", "name": "refNo", "autoWidth": true },
+                    { "data": "amountString", "name": "amountString", "autoWidth": true },
+                    { "data": "description", "name": "description", "autoWidth": true },
+                    { "data": "dateCreated", "name": "dateCreated", "autoWidth": true },
+                    { "data": "readAbleStatus", "name": "readAbleStatus", "autoWidth": true },
+                    {
+                        "data": null,
+                        render: function (data, type, row) {
+                            if (type === 'display') {
+                                if (data.readAbleStatus === 'Pending') {
+                                    return '<a class="editItem" href="#"> <i class="os-icon os-icon-ui-49"></i></a>';
+                                } else {
+                                    return '';
+                                }
+
+                            }
+                            return data;
+                        },
+                    },
+                  //  { "data": null, "name": "Action", "defaultContent": '<a class="editItem" href="#"> <i class="os-icon os-icon-ui-49"></i></a>', "autoWidth": true }
+
+                ],
+                createdRow: function (row, data, dataIndex) {
+                }
+
+            });
+
+            $(".dataTables_filter").remove();
+            $(".dataTables_length").remove();
+
+            $('.search-input').on('keyup change', function () {
+                var index = $(this).attr('data-column'),
+                    val = $(this).val();
+                table.columns(index).search(val.trim()).draw();
+            });
+
+            $(".exportExcel").hide();
+            $(".exportPdf").hide();
+
+            $("#downloadXcelBtn").click(function () {
+
+                $(".exportExcel").click();
+
+            });
+            $("#downloadPdfBtn").click(function () {
+                $(".exportPdf").click();
+            });
+
+            $("#docUploadBtn").click(function () {
+                $("#requestDocFile").click();
+            });
+
+            $("#requestDocFile").change(function(e){
+                var fileName = e.target.files[0].name;                
+                $("#file-chosen").html('Selected file: ' + fileName);
+            })
+            
+            $("#budgetYearDropDown").change(function () {
+                SiteUtils.loading();
+                var getUrl = '@Url.Action("GetBudgetPeriodByYear", "AppRequest", new { area = "" })';
+
+
+                var data = {
+                    yearId: $(this).val()
+                };
+
+                var resultArr = [];
+
+                $.when(SiteUtils.get(data, getUrl)).then(function (response) {
+                    $("#budgetPeriodDropDown").html('');
+                    var data = response.data;
+                    resultArr.push('<option value="">Select Budget Period</option>')
+                    $.each(data, function (indx, val) {
+                        resultArr.push(`<option value="${val.id}">${val.name}</option>`)
+                    });
+                    $("#budgetPeriodDropDown").append(resultArr);
+                    $("#budgetPeriodDropDown").select2();
+
+                    SiteUtils.loadingOff();
+
+                })
+                    .fail(function () {
+                        SiteUtils.loadingOff();
+                    })
+            });
+
+            $("#departmentDropDown").change(function () {
+                SiteUtils.loading();
+                var getUrl = '@Url.Action("GetSubUnitByDepartment", "AppRequest", new { area = "" })';
+
+                var data = {
+                    deptId: $(this).val()
+                };
+
+                var filterUrl = '@Url.Action("FilterBudgetDetails", "AppRequest", new { area = "" })';
+                var filterData = {
+                    yearId: $("#budgetYearDropDown").val(),
+                    periodId: $("#budgetPeriodDropDown").val(),
+                    dept: $(this).val(),
+                    subDept: ''
+                };
+
+                var resultArr = [];
+
+                $.when(SiteUtils.get(data, getUrl)).then(function (response) {
+                    $("#subUnitDropDown").html('');
+                    var data = response.data;
+                    resultArr.push('<option value="">Select Sub Unit</option>')
+                    $.each(data, function (indx, val) {
+                        resultArr.push(`<option value="${val.id}">${val.name}</option>`)
+                    });
+                    $("#subUnitDropDown").append(resultArr);
+                    $("#subUnitDropDown").select2();
+
+                    $("#voteTypeDropDown").html('');
+                    var vtArray = [];
+                    $.when(SiteUtils.get(filterData, filterUrl)).then(function (resp) {
+                        var vtData = resp.data;
+                        console.log('vtData', vtData);
+
+                        vtArray.push('<option value="">Select Vote Type</option>')
+                        $.each(vtData, function (indx, val) {
+                            vtArray.push(`<option value="${val.budgetDetailPeriodID}">${val.accountID}-${val.accountName}</option>`)
+                        });
+                        $("#voteTypeDropDown").append(vtArray);
+                        $("#voteTypeDropDown").select2();
+
+                    }).fail(function () {
+
+                    })
+
+
+                    SiteUtils.loadingOff();
+
+                })
+                    .fail(function () {
+                        SiteUtils.loadingOff();
+                    })
+            });
+
+            $("#requestTypeDropDown").change(function () {
+
+                if (!$(this).val()){
+                    return false;
+                }else{
+                    SiteUtils.loading();
+                    var getUrl = '@Url.Action("CheckRequestType", "AppRequest", new { area = "" })';
+
+                    var data = {
+                        requestTypeId: $(this).val()
+                    };
+
+                    $.when(SiteUtils.get(data, getUrl)).then(function (response) {
+
+                        var data = response.data;
+
+                        if (data.reduceBuget == false) {
+                            $("#budgetCatDropDown").prop("disabled", true);
+                            $("#budgetPeriodDropDown").prop("disabled", true);
+                            $("#voteTypeDropDown").prop("disabled", true);
+                            $("#budgetYearDropDown").prop("disabled", true);
+                        } else {
+                            $("#budgetCatDropDown").prop("disabled", false);
+                            $("#budgetPeriodDropDown").prop("disabled", false);
+                            $("#voteTypeDropDown").prop("disabled", false);
+                            $("#budgetYearDropDown").prop("disabled", false);
+                        }
+                        SiteUtils.loadingOff();
+
+                    })
+                        .fail(function () {
+                            SiteUtils.loadingOff();
+                        })
+                }
+
+                
+            });
+
+
+            function clearCtrl() {
+                $("#amount").val('');
+                $("#description").val('');
+                $("#requestTypeDropDown").val('')
+            }
+
+            $("#saveButton").click(function (e) {
+                e.preventDefault();
+
+                var addUrl = "@Url.Action("AddPaymentRequest", "AppRequest",new { area=""})";
+
+                var data = {
+                    PaymentRequestId: $("#paymentRequestId").val(),
+                    RequestTypeId: $("#requestTypeDropDown").val(),
+                    StaffId: $("#beneficiaryDropDown").val(),
+                    BeneficiaryName: $.trim($("#beneficiaryDropDown option:selected").text()),
+                    DepartmentSubUnitId: $("#subUnitDropDown").val(),
+                    RequestDateString: $("#requestDate").val(),
+                    BudgetCategoryId: $("#budgetCatDropDown").val(),
+                    BudgetPeriodId: $("#budgetPeriodDropDown").val(),
+                    VoteType: $("#voteTypeDropDown").val() == "" ? "" : $.trim($("#voteTypeDropDown option: selected").text()),
+                    Amount: $("#amount").val(),
+                    Description: $("#description").val(),
+                };
+
+                if ($.trim(data.RequestTypeId) == ''
+                    || $.trim(data.StaffId) == ''
+                    || $.trim(data.Amount) == ''
+                    || $.trim(data.Description) == ''
+                ) {
+
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: 'Some required fields are empty!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+
+                SiteUtils.loading();
+
+                $.when(SiteUtils.post(data, addUrl)).done(function (response) {
+                    if (response.error == false) {
+
+                        var docFile = $("#requestDocFile")[0].files;
+
+                        if (!docFile){
+                            SiteUtils.loadingOff();
+                            clearCtrl();
+                            table.draw();
+                            $.confirm({
+                                title: 'Request Success !',
+                                content: response.message,
+                                type: 'green',
+                                typeAnimated: true,
+                                buttons: {
+                                    close: function () {
+                                    }
+                                }
+                            });
+
+                            return false;
+                        }
+
+                        var reqId = response.requestId;
+
+                        console.log("reqId", response);
+
+                        var postImgUrl = "@Url.Action("UploadRequestDocument","AppRequest")";
+
+                        var frmData = new FormData();
+                        frmData.append('docFile', docFile[0]);
+                        frmData.append("requestId", reqId);
+
+                        $.when(SiteUtils.postImage(frmData, postImgUrl)).then(function (imgResp) {
+
+                            if(imgResp.error==false){
+                                clearCtrl();
+                                table.draw();
+                                SiteUtils.loadingOff();
+                                $("#file-chosen").html('');
+                                $("#file-chosen").html('No file chosen');
+                                $.confirm({
+                                    title: 'Request Success !',
+                                    content: response.message,
+                                    type: 'green',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        close: function () {
+                                        }
+                                    }
+                                });
+
+                            }else{
+                                SiteUtils.loadingOff();
+
+                                $.confirm({
+                                    title: 'Error!',
+                                    content: imgResp.message,
+                                    type: 'red',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        close: function () {
+                                        }
+                                    }
+                                });
+                            }
+
+                        }).fail(function(errorr){
+                            SiteUtils.loadingOff();
+
+                            $.confirm({
+                                title: 'Error!',
+                                content: 'A network related error has occured',
+                                type: 'red',
+                                typeAnimated: true,
+                                buttons: {
+                                    close: function () {
+                                    }
+                                }
+                            });
+                        })                     
+
+                    } else {
+                        SiteUtils.loadingOff();
+
+                        $.confirm({
+                            title: 'Error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+
+                    SiteUtils.loadingOff();
+
+                    $.confirm({
+                        title: 'Error!',
+                        content: 'A network related error has occured',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                });
+
+            });
+
+            $(document).on("click", "#requestTable tbody td .editItem", function (e) {
+
+                var data = table.row($(this).parents('tr')).data();
+                //console.log(data);
+                $(".modal-title").text("Update Request");
+                $("#paymentRequestId").val(data.paymentRequestId);
+                $("#requestTypeDropDown").val(data.requestTypeId).trigger('change');
+                $("#beneficiaryDropDown").val(data.staffId).trigger('change');
+                $("#requestDate").val(data.dateCreated);
+                $("#budgetPeriodDropDown").val(data.budgetCategoryId).trigger('change');
+                $("#amount").val(data.amount);
+                $("#description").val(data.description);
+                $("#requestModal").modal('show');
+
+            });
+
+            //var data = {
+            //    RequestTypeId: $("#requestTypeDropDown").val(),
+            //    StaffId: $("#beneficiaryDropDown").val(),
+            //    BeneficiaryName: $.trim($("#beneficiaryDropDown option:selected").text()),
+            //    DepartmentSubUnitId: $("#subUnitDropDown").val(),
+            //    RequestDateString: $("#requestDate").val(),
+            //    BudgetCategoryId: $("#budgetCatDropDown").val(),
+            //    BudgetPeriodId: $("#budgetPeriodDropDown").val(),
+            //    VoteType: $("#voteTypeDropDown").val() == "" ? "" : $.trim($("#voteTypeDropDown option: selected").text()),
+            //    Amount: $("#amount").val(),
+            //    Description: $("#description").val(),
+            //};
+
+
+            
+        })
+    </script>
+
+}
+

@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admon ERP MIS @ViewData["Title"]</title>
+    
+     <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet" type="text/css">
+    <link href="~/assets/components/select2/dist/css/select2.min.css" rel="stylesheet">
+    @*<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />*@
+    <link href="~/assets/components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <link href="~/assets/components/dropzone/dist/dropzone.css" rel="stylesheet">
+    <link href="~/assets/components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
+    <link href="~/assets/components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet">
+    <link href="~/assets/components/perfect-scrollbar/css/perfect-scrollbar.min.css" rel="stylesheet">
+    <link href="~/assets/components/slick-carousel/slick/slick.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link href="~/assets/css/main.css?version=4.4.0" rel="stylesheet">
+        <link href="~/assets/icon_fonts_assets/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    
+    <link href="~/assets/css/overrides.css" rel="stylesheet" />
+    
+</head>
+<body class="menu-position-side menu-side-left full-screen">
+    <div class="all-wrapper solid-bg-all">
+        <div class="layout-w">
+            @await Html.PartialAsync("_mobileMenu")
+            @await Html.PartialAsync("_mainMenu")
+            <div class="content-w">
+                @await Html.PartialAsync("_topBar")
+                <div class="content-i">
+                    <div class="content-box">
+                        @RenderBody()
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none" class="loading-back-drop"></div>
+
+    <div style="display:none" id="app-loader" class="loader">
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--dot"></div>
+        <div class="loader--text"></div>
+    </div>
+
+    <script src="~/assets/components/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/components/popper.js/dist/umd/popper.min.js" ></script>
+    <script src="~/assets/components/moment/moment.js" ></script>
+    <script src="~/assets/components/chart.js/dist/Chart.min.js" ></script>
+    <script src="~/assets/components/select2/dist/js/select2.full.min.js" ></script>
+    <script src="~/assets/components/jquery-bar-rating/dist/jquery.barrating.min.js" ></script>
+    <script src="~/assets/components/ckeditor/ckeditor.js" ></script>
+    <script src="~/assets/components/bootstrap-validator/dist/validator.min.js" ></script>
+    <script src="~/assets/components/bootstrap-daterangepicker/daterangepicker.js" ></script>
+    <script src="~/assets/components/ion.rangeSlider/js/ion.rangeSlider.min.js" ></script>
+    <script src="~/assets/components/dropzone/dist/dropzone.js" ></script>
+    <script src="~/assets/components/editable-table/mindmup-editabletable.js" ></script>
+    <script src="~/assets/components/datatables.net/js/jquery.dataTables.min.js" ></script>
+    <script src="~/assets/components/datatables.net-bs/js/dataTables.bootstrap.min.js" ></script>
+    <script src="~/assets/components/fullcalendar/dist/fullcalendar.min.js" ></script>
+    <script src="~/assets/components/perfect-scrollbar/js/perfect-scrollbar.jquery.min.js" ></script>
+    <script src="~/assets/components/tether/dist/js/tether.min.js" ></script>
+    <script src="~/assets/components/slick-carousel/slick/slick.min.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/util.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/alert.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/button.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/carousel.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/collapse.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/dropdown.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/modal.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/tab.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/tooltip.js" ></script>
+    <script src="~/assets/components/bootstrap/js/dist/popover.js" ></script>
+    <script src="~/assets/js/dataTables.bootstrap4.min.js" ></script>
+    <script src="~/assets/js/datatables.buttons.min.js"></script>
+    <script src="~/assets/js/jszip.min.js"></script>
+    <script src="~/assets/js/pdfmake.min.js"></script>
+    <script src="~/assets/js/vfs_fonts.js"></script>
+    <script src="~/assets/js/buttons.html5.min.js"></script>
+    <script src="~/assets/js/buttons.print.min.js"></script>
+    <script src="~/assets/js/accounting.min.js" ></script>
+    <script src="~/assets/js/AppUtils.js"></script>
+    <script src="~/assets/js/main.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+    @*<script src="~/assets/js/main.js?version=4.4.0"></script>*@
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

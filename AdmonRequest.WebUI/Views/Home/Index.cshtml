@@ -1,0 +1,156 @@
+﻿@model List<AdmonRequest.Application.Models.PaymentRequestViewModel>
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <div class="element-actions">
+            
+            </div>
+            <h6 class="element-header">
+                Dashboard
+            </h6>
+            <div class="element-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                All Requests Todate
+                            </div>
+                            <div class="value">
+                                @ViewBag.AllRequestCount                               
+                            </div>
+                            <div class="trending trending-up-basic">
+                                @*<span>12%</span><i class="os-icon os-icon-arrow-up2"></i>*@
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                                All Approved Requests
+                            </div>
+                            <div class="value">
+                                @ViewBag.AllApprovedRequestCount
+                                 
+                            </div>
+                            <div class="trending trending-down-basic">
+                                
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        <a class="element-box el-tablo" href="#">
+                            <div class="label">
+                               All Disaprroved Request
+                            </div>
+                            <div class="value">
+                                @ViewBag.AllRejectedRequestCount
+                            </div>
+                            <div class="trending trending-down-basic">
+                                
+                            </div>
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Recent Requests
+            </h6>
+            <div class="element-box-tp">
+           
+                <!--------------------
+                START - Table with actions
+                ------------------  -->
+                <div class="table-responsive">
+                    <table class="table table-bordered table-lg table-v2 table-striped">
+                        <thead>
+                            <tr>
+                               
+                                <th>
+                                    Beneficiary
+                                </th>
+                                <th>
+                                    Department Unit
+                                </th>
+                                <th>
+                                    Ref No
+                                </th>
+                                <th>
+                                    Amount
+                                </th>
+                                <th>
+                                    Request Date
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @foreach(var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @item.Beneficiary
+                                    </td>
+                                    <td>
+                                        @item.SubDepartment
+                                    </td>
+                                    <td>
+                                        @item.RefNo
+                                    </td>
+                                    <td class="text-right">
+                                        @item.AmountString
+                                    </td>
+                                    <td>
+                                        @item.DateCreated
+                                    </td>
+                                    <td class="text-center">
+                                        @if (item.ReadAbleStatus == "Approved")
+                                        {
+                                            <div class="status-pill green" data-title="@item.ReadAbleStatus" data-toggle="tooltip"></div>
+                                        }
+                                        else if (item.ReadAbleStatus == "Disapprove")
+                                        {
+                                            <div class="status-pill red" data-title="@item.ReadAbleStatus" data-toggle="tooltip"></div>
+                                        }
+                                        else
+                                        {
+                                            <div class="status-pill yellow" data-title="@item.ReadAbleStatus" data-toggle="tooltip"></div>
+                                        }
+
+                                    </td>
+                                   @* <td>
+                                        @item.ReadAbleStatus
+                                    </td>*@
+
+                                </tr>
+                            }
+                          
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <!--------------------
+                END - Table with actions
+                ------------------            -->
+               
+            </div>
+        </div>
+    </div>
+</div>

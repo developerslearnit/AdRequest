@@ -1,0 +1,211 @@
+﻿@{
+    ViewData["Title"] = "RequestReport";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Request Report
+    </h6>
+
+    <div class="element-box">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-horizontal">
+                    <fieldset>
+                        <legend>Report Options</legend>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div style="padding:10px 0;" class="form-group">
+                                    <label class="form-control check-label">
+                                        <input value="rptByDate" checked name="reportOptionRadio" type="radio" />By Date
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div style="padding:10px 0;" class="form-group">
+                                    <label class="form-control check-label">
+                                        <input value="rptByStatus" name="reportOptionRadio" type="radio" />By Status
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div style="padding-top:20px" class="form-horizontal">
+                    <div id="date_wrap" class="col-md-12">
+                        <fieldset>
+                            <legend>Select Date Range</legend>
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            Start Date
+                                        </label>
+                                        <div class="date-input">
+                                            <input class="single-daterange form-control" id="startDate" value="" type="text">
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>
+                                            End Date
+                                        </label>
+                                        <div class="date-input">
+                                            <input class="single-daterange form-control" value="" id="endDate" type="text">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div id="status_wrap" style="display:none;padding-top:3px" class="col-md-12">
+                        <fieldset>
+                            <legend>Select Status</legend>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div style="padding:10px 0;" class="form-group">
+                                        <label class="form-control check-label">
+                                            <input value="approved" checked name="statusRadio" type="radio" />Approved
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding:10px 0;" class="form-group">
+                                        <label class="form-control check-label">
+                                            <input value="pending" name="statusRadio" type="radio" />Pending
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div style="padding:10px 0;" class="form-group">
+                                        <label class="form-control check-label">
+                                            <input value="rejected" name="statusRadio" type="radio" />Disapproved
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div style="padding-top:20px" class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3">
+                        <button id="ViewReportBtn" class="btn btn-md btn-primary" type="button">View Report</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+@await Html.PartialAsync("_ReportPartial")
+
+
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+
+            $(".single-daterange").val("");
+
+            $("input[name='reportOptionRadio']").click(function () {
+                var $self = $(this);
+
+                if ($self.val() == 'rptByDate') {
+                    $("#status_wrap").hide();
+                    $("#date_wrap").show();
+                } else {
+                    $("#date_wrap").hide();
+                    $("#status_wrap").show();
+
+                }
+            });
+
+            $("#ViewReportBtn").click(function () {
+                SiteUtils.loading();
+                var data = {};
+                var rptOption = $("input[name='reportOptionRadio']:checked").val();
+                if (rptOption == 'rptByDate') {
+                    data = {
+                        ViewByDate: true,
+                        ViewByStatus: false,
+                        Status: '',
+                        StartDate: $("#startDate").val(),
+                        EndDate: $("#startDate").val()
+                    }
+                } else {
+                    data = {
+                        ViewByDate: false,
+                        ViewByStatus: true,
+                        Status: $("input[name='statusRadio']:checked").val(),
+                        StartDate: '',
+                        EndDate: ''
+                    }
+                }
+
+                var addUrl = "@Url.Action("RequestReportView", "Report")";
+
+                $.when(SiteUtils.post(data, addUrl)).done(function (response) {
+                    if (response.error == false) {
+
+                        $("#previewTag").html('');
+                        $("#previewTag").html(response.data);
+                        $("#reportViewerModal").modal('show');
+                        SiteUtils.loadingOff();
+                       
+
+                    } else {
+                        SiteUtils.loadingOff();
+
+                        $.confirm({
+                            title: 'Error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+
+                    SiteUtils.loadingOff();
+                    $.confirm({
+                        title: 'Error!',
+                        content: 'A network related error has occured',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                });
+
+            });
+
+
+
+
+        })
+    </script>
+}
+

@@ -1,0 +1,489 @@
+﻿@{
+    ViewData["Title"] = "RequestApproval";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Management Approvals
+        @* <a style="margin:5px 0 8px 0;float:right" href="#" id="newRecordBtn" class="btn btn-sm btn-primary btn-upper">
+        <i class="os-icon os-icon-ui-22"></i><span>Add New</span>
+        </a>*@
+    </h6>
+
+    <div class="element-box">
+        <div style="margin-bottom:0 !important" class="controls-above-table">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a id="downloadXcelBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-excel-o"></i> <span style="margin-left:7px">Download Excel</span></a>
+                    <a id="downloadPdfBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-pdf-o"></i> <span style="margin-left:7px"> Donwload Pdf</span></a>
+                </div>
+                <div class="col-sm-6">
+                 @*   <form class="form-inline justify-content-sm-end">
+                        <input class="form-control form-control-sm rounded bright" placeholder="Search" type="text"><select class="form-control form-control-sm rounded bright">
+                            <option selected="selected" value="">
+                                Select Status
+                            </option>
+                            <option value="Pending">
+                                Pending
+                            </option>
+                            <option value="Active">
+                                Active
+                            </option>
+                            <option value="Cancelled">
+                                Cancelled
+                            </option>
+                        </select>
+                    </form>*@
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table cellspacing="0" width="100%" class="table table-v2 table-bordered table-striped " id="requestTable" style="width: 100%;">
+                    <thead class="">
+                        <tr>
+                            <th>Request Type</th>
+                            <th>Beneficiary</th>
+                            <th>Department Unit</th>
+                            <th>Ref No</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th>Request Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <thead id="searchHeader">
+                        <tr>
+                            <th><input class="form-control search-input" data-column="1" type="text"></th>
+                            <th><input class="form-control search-input" data-column="2" type="text"></th>
+                            <th><input class="form-control search-input" data-column="3" type="text"></th>
+                            <th><input class="form-control search-input" data-column="4" type="text"></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th>Decision</th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="onboarding-modal modal fade animated show" id="requestApprovalModal" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-centered modal-lg" role="document">
+        <div class="modal-content text-center" style="padding-bottom:1px !important">
+            <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="os-icon os-icon-close"></span></button>
+            <div class="onboarding-media">
+                <img alt="" src="~/assets/img/admon_bg.jpg" width="200px">
+            </div>
+            <div class="onboarding-content with-gradient">
+                <h4 class="onboarding-title">
+                    Staff Request Approval
+                </h4>
+                <form>
+                    <input style="margin-left:-99999px" type="hidden" id="requestId" value="" />
+                    <input style="margin-left:-99999px" type="hidden" id="reqDoc" value="" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Request Type
+                                </label>
+                                <input type="text" disabled readonly id="requestType" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Beneficiary Name
+                                </label>
+                                <input type="text" disabled readonly id="beneficiary" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Department Sub-Unit
+                                </label>
+                                <input type="text" disabled readonly id="subDepartment" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Vote Type
+                                </label>
+                                <input type="text" disabled readonly id="voteType" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Amount
+                                </label>
+                                <input type="text" disabled readonly id="amountString" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Description
+                                </label>
+                                <input type="text" disabled readonly id="description" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Request Date
+                                </label>
+                                <input type="text" disabled readonly id="dateCreated" class="form-control-plaintext bordered" />
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label style="color:#fff">
+                                    Description
+                                </label>
+                                <button id="viewDocsBtn" style="float:left;margin-top:27px;" type="button" class="btn btn-outline-secondary">
+                                    <i class="os-icon os-icon-newspaper"></i><span>
+                                        View Document
+                                    </span>
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </form>
+               
+            </div>
+
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-bold btn-pure btn-danger" data-dismiss="modal">Close</button>
+                    <button id="rejectBtn" type="button" class="btn btn-bold btn-pure btn-warning">Reject Request</button>
+                    <button id="approveBtn" type="button" class="btn btn-bold btn-pure btn-primary">Approve Request</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade modal-center-c onboarding-modal" id="requestDocumentModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Request Document
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body onboarding-content with-gradient">
+                <span id="previewTag">
+
+                </span>
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-pure btn-danger" data-dismiss="modal">Close</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+
+
+            var table = $("#requestTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                "order": [[6, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Export excel',
+                        className: 'exportExcel',
+                        filename: 'payment_request',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Export pdf',
+                        className: 'exportPdf',
+                        filename: 'payment_request',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                ],
+                "ajax": {
+                    "url": '@Url.Action("ListAllPaymentRequestForApprovals", "AppRequest",new { area = "" })',
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "requestType", "name": "requestType", "autoWidth": true },
+                    { "data": "beneficiary", "name": "beneficiary", "autoWidth": true },
+                    { "data": "subDepartment", "name": "subDepartment", "autoWidth": true },
+                    { "data": "refNo", "name": "refNo", "autoWidth": true },
+                    { "data": "amountString", "name": "amountString", "autoWidth": true },
+                    { "data": "description", "name": "description", "autoWidth": true },
+                    { "data": "dateCreated", "name": "dateCreated", "autoWidth": true },
+                    { "data": null, "name": "Action", "defaultContent": '<a class="viewItem" href="#"><i class="os-icon os-icon-hamburger-menu-1"></i></a>', "autoWidth": true }
+
+                ],
+                createdRow: function (row, data, dataIndex) {
+                }
+
+            });
+
+            $('.search-input').on('keyup change', function () {
+                
+                var index = $(this).attr('data-column'),
+                    val = $(this).val();
+                table.columns(index).search(val.trim()).draw();
+            });
+
+            $(".dataTables_filter").remove();
+            $(".dataTables_length").remove();
+
+
+            $(".exportExcel").hide();
+            $(".exportPdf").hide();
+
+            $("#downloadXcelBtn").click(function () {
+
+                $(".exportExcel").click();
+
+            });
+            $("#downloadPdfBtn").click(function () {
+                $(".exportPdf").click();
+            });
+
+            $(document).on("click", "#requestTable tbody tr td a.viewItem", function (e) {
+                e.preventDefault();
+                SiteUtils.loading();
+                var data = table.row($(this).parents('tr')).data();
+                
+                $("#reqDoc").val("");
+                $("#requestId").val(data.paymentRequestId);
+                $("#requestType").val(data.requestType);
+                $("#beneficiary").val(data.beneficiary);
+                $("#voteType").val(data.voteType);
+                $("#subDepartment").val(data.subDepartment);
+                $("#description").val(data.description);
+                $("#amountString").val(data.amountString);
+                $("#dateCreated").val(data.dateCreated);
+
+                var getUrl = '@Url.Action("FetchRequestDocument", "AppRequest", new { area = "" })';
+
+                var data = {
+                    id: data.paymentRequestId
+                };
+
+
+                $.when(SiteUtils.get(data, getUrl)).then(function (response) {
+
+                    if(response.error==false){
+                        var data = response.data;
+
+                        //console.log(data)
+
+                        if (data) {
+                            $("#viewDocsBtn").show();
+                            $("#reqDoc").val(JSON.stringify(data));
+                        } else {
+                            $("#viewDocsBtn").hide();
+                        }
+                    }else{
+                        $("#viewDocsBtn").hide();
+                    }                   
+
+                    $("#requestApprovalModal").modal('show');
+                    SiteUtils.loadingOff();
+                    //SiteUtils.loadingOff();
+
+                })
+                    .fail(function () {
+                        //$("#viewDocsBtn").hide();
+                        SiteUtils.loadingOff();
+                        $.confirm({
+                            title: 'Error!',
+                            content: 'A network related error has occured',
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+                    })                               
+                
+                
+            });
+
+            $("#approveBtn").click(function(e){
+                e.preventDefault();
+
+                $.confirm({
+                    title: 'Confirmation!',
+                    content: 'Are you sure you want to approve the selected payment request?',
+                    type: 'yellow',
+                    typeAnimated: true,
+                    buttons: {
+                        confirm: function () {
+                           
+                            var data = {
+                                requestId: $("#requestId").val(),
+                                action: "Approved"
+                            };
+
+                            var addUrl = "@Url.Action("ApproveRequest", "AppRequest",new { area=""})";
+
+                            SiteUtils.loading();
+
+                            $.when(SiteUtils.post(data, addUrl)).done(function (response) {
+                                if (response.error == false) {
+
+                                    SiteUtils.loadingOff();
+                                    //clearCtrl();
+                                    table.draw();
+                                    $.confirm({
+                                        title: 'Request Success !',
+                                        content: response.message,
+                                        type: 'green',
+                                        typeAnimated: true,
+                                        buttons: {
+                                            close: function () {
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    SiteUtils.loadingOff();
+
+                                    $.confirm({
+                                        title: 'Error!',
+                                        content: response.message,
+                                        type: 'red',
+                                        typeAnimated: true,
+                                        buttons: {
+                                            close: function () {
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }).fail(function (err) {
+
+                                SiteUtils.loadingOff();
+
+                                $.confirm({
+                                    title: 'Error!',
+                                    content: 'A network related error has occured',
+                                    type: 'red',
+                                    typeAnimated: true,
+                                    buttons: {
+                                        close: function () {
+                                        }
+                                    }
+                                });
+                            });
+
+                        },
+                        close: function () {
+                        }
+                    }
+                });
+
+            });
+
+
+            
+
+            $("#viewDocsBtn").click(function(){
+                $("#previewTag").html('');
+                var doc = $("#reqDoc").val();
+                var docObj = JSON.parse(doc);
+                $("#previewTag").html(docObj.document);               
+
+                $("#requestDocumentModal").modal('show');
+
+            })
+
+
+
+
+
+
+        })
+    </script>
+
+}
+

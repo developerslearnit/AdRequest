@@ -1,0 +1,324 @@
+﻿@{
+    ViewData["Title"] = "Application Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<div class="element-wrapper">
+    <h6 class="element-header">
+        Application Users
+    </h6>
+
+    <div class="element-box">
+        <div style="margin:0;margin-bottom:10px !important" class="controls-above-table">
+            <div class="row">
+                <div class="col-sm-6">
+                    <a id="downloadXcelBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-excel-o"></i> <span style="margin-left:7px">Download Excel</span></a>
+                    <a id="downloadPdfBtn" class="btn btn-sm btn-secondary" href="#"><i class="fa fa-file-pdf-o"></i> <span style="margin-left:7px"> Donwload Pdf</span></a>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table cellspacing="0" width="100%" class="table table-v2 table-bordered table-striped " id="usersTable" style="width: 100%;">
+                    <thead class="">
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Staff Code</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                            <th style="width:5%">Action</th>
+                        </tr>
+                    </thead>
+                    <thead id="searchHeader">
+                        <tr>
+                            <th><input class="form-control search-input" data-column="1" type="text"></th>
+                            <th><input class="form-control search-input" data-column="2" type="text"></th>
+                            <th><input class="form-control search-input" data-column="3" type="text"></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade modal-center-c onboarding-modal" id="userModal" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    Manage User
+                </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body onboarding-content with-gradient">
+                <input type="hidden" id="staffId" value="" />
+                <div class="form-horizontal">
+                    <input type="hidden" id="hidRequestTypeId" value="" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Staff Name
+                                </label>
+                                <input type="text" disabled id="staffName" class="form-control-plaintext bordered" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Staff Code
+                                </label>
+                                <input type="text" disabled id="staffCode" class="form-control-plaintext bordered" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Email
+                                </label>
+                                <input type="text" id="email" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Role
+                                </label>
+                                <select style="width:100%" class="form-control" id="roleDropDown">
+                                    <option value="">Select Role</option>
+                                    <option value="Management">Management</option>
+                                    <option value="Staff">Staff</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>
+                                    Approval Stage
+                                </label>
+                                @Html.DropDownList("approvalStagesDropDown",(SelectList)ViewBag.ApprovalStages,"Select Approval Stage",new{@class="form-control",style="width:100%"})
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div style="padding:10px 0;margin-top:20px" class="form-group">
+                                <label class="form-control check-label">
+                                    <input class="resource-chk" id="activeStatus" type="checkbox" />Active Status
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-bold btn-pure btn-danger" data-dismiss="modal">Close</button>
+                    <button id="saveBtn" type="button" class="btn btn-bold btn-pure btn-primary">Update User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script>
+
+        $(function () {
+
+            $("#approvalStagesDropDown,#roleDropDown").select2();
+
+
+            var table = $("#usersTable").DataTable({
+                "processing": true, // for show progress bar
+                "serverSide": true, // for process server side
+                "filter": true, // this is for disable filter (search box)
+                "orderMulti": false, // for disable multiple column at once
+                //"dom": '<"top"i>rt<"bottom"lp><"clear">',
+                "order": [[0, 'asc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'excel',
+                        text: 'Export excel',
+                        className: 'exportExcel',
+                        filename: 'user_list',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: 'Export pdf',
+                        className: 'exportPdf',
+                        filename: 'user_list',
+                        exportOptions: {
+                            modifier: {
+                                page: 'all'
+                            }
+                        }
+                    },
+                ],
+                "ajax": {
+                    "url": '@Url.Action("ListAllUsers", "useraccount",new { area = "" })',
+                    "type": "POST",
+                    "datatype": "json"
+                },
+                "columns": [
+                    { "data": "staffName", "name": "staffName", "autoWidth": true },
+                    { "data": "staffCode", "name": "staffCode", "autoWidth": true },
+                    { "data": "email", "name": "email", "autoWidth": true },
+                    { "data": "role", "name": "role", "autoWidth": true },
+                    { "data": "readAbleStatus", "name": "readAbleStatus", "autoWidth": true },
+                    {
+                        "data": null, "name": "Action", "defaultContent": '<a class="viewItem" href="#"><i class="os-icon os-icon-hamburger-menu-1"></i></a>'
+                    }
+
+                ],
+                createdRow: function (row, data, dataIndex) {
+                }
+
+            });
+
+            $(".dataTables_filter").remove();
+            $(".dataTables_length").remove();
+
+            $('.search-input').on('keyup change', function () {
+                var index = $(this).attr('data-column'),
+                    val = $(this).val();
+                table.columns(index).search(val.trim()).draw();
+            });
+
+            $(".exportExcel").hide();
+            $(".exportPdf").hide();
+
+            $("#downloadXcelBtn").click(function () {
+
+                $(".exportExcel").click();
+
+            });
+            $("#downloadPdfBtn").click(function () {
+                $(".exportPdf").click();
+            });
+
+            $("#docUploadBtn").click(function () {
+                $("#requestDocFile").click();
+            });
+
+            $(document).on("click", "#usersTable tbody tr td a.viewItem", function (e) {
+                e.preventDefault();
+
+
+                var data = table.row($(this).parents('tr')).data();
+
+                $("#staffId").val(data.staffId);
+                $("#staffName").val(data.staffName);
+                $("#staffCode").val(data.staffCode);
+                $("#email").val(data.email);
+                $("#roleDropDown").val(data.role).trigger('change');
+                $("#approvalStagesDropDown").val(data.approvalStage).trigger('change');
+                $("#activeStatus").prop("checked", data.activeStatus);
+                $("#userModal").modal('show');
+                
+
+            });
+
+            $("#saveBtn").click(function (e) {
+                e.preventDefault();
+                
+                var addUrl = "@Url.Action("UpdateUser", "UserAccount")";
+
+                var data = {
+                    StaffId: $("#staffId").val(),
+                    Role: $("#roleDropDown").val(),
+                    Email: $("#email").val() || " ",
+                    ApprovalStage: $("#approvalStagesDropDown").val(),
+                    ActiveStatus: $("#activeStatus").prop("checked")
+                };
+
+                SiteUtils.loading();
+
+                $.when(SiteUtils.post(data, addUrl)).done(function (response) {
+                
+                    if(response.error==false){
+                        SiteUtils.loadingOff();
+                        table.draw();
+                        $.confirm({
+                            title: 'Request Success !',
+                            content: response.message,
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+                    }else{
+                        SiteUtils.loadingOff();
+                        $.confirm({
+                            title: 'Request Success !',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+                    }
+                
+                })
+
+
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+        });
+    </script>
+
+}

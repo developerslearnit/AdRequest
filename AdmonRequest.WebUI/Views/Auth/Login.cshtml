@@ -1,0 +1,444 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Admon ERP MIS :: Login</title>
+    <meta charset="utf-8">
+    <meta content="ie=edge" http-equiv="x-ua-compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="favicon.png" rel="shortcut icon">
+    <link href="apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="https://fonts.googleapis.com/css?family=Rubik:300,400,500" rel="stylesheet" type="text/css">
+    <link href="~/assets/css/main.css?version=4.4.0" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+    <link href="~/assets/css/overrides.css" rel="stylesheet" />
+</head>
+
+<body class="auth-wrapper">
+    <div class="all-wrapper menu-side with-pattern">
+        <div class="auth-box-w">
+            <div style="padding-bottom:10% !important" class="logo-w">
+                <a href="#"><img alt="logo" src="~/assets/img/logo.png"></a>
+                <br />
+                <br />
+                <h2 style="margin-top:1rem;margin-top:10px;font-size:25px">
+                    Admon ERP MIS
+                </h2>
+            </div>
+            <h4 class="auth-header">
+                Login
+            </h4>
+            <form action="">
+                <div class="form-group">
+                    <label for="">Username</label><input class="form-control" placeholder="Enter your username" id="username" type="text">
+                    <div class="pre-icon os-icon os-icon-user-male-circle"></div>
+                </div>
+                <div class="form-group">
+                    <label for="">Password</label><input class="form-control" placeholder="Enter your password" id="password" type="password">
+                    <div class="pre-icon os-icon os-icon-fingerprint"></div>
+                </div>
+                <div class="buttons-w">
+                    <button class="btn loginBtn btn-primary">Log me in</button>
+                    <div class="form-check-inline">
+                        <label class="form-check-label"><input id="persistLogin" class="form-check-input" type="checkbox">Remember Me</label>
+                    </div>
+                </div>
+                <div style="margin-top:20px" class="form-group">
+                    <a id="forgotPassLing" style="display:block; text-align:center;" href="#">Forgot Password?</a>
+                </div>
+                <div class="floated-chat-btn">
+                    <p>Registered to</p>
+                    <img src="/assets/img/metro-logo.jpg" width="120" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="onboarding-modal modal fade animated show" id="forgotpasswordModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-md modal-centered" role="document">
+            <div class="modal-content text-center">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-side-by-side">
+                   @* <div class="onboarding-media">
+                        <img alt="" src="~/assets/img/admon_bg.jpg" width="200px">
+                    </div>*@
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title">
+                            Password Reset Request
+                        </h4>
+                        <div class="onboarding-text">
+                            Please enter your email address in the box below. If the email exists, password reset instruction will be sent to your.
+                        </div>
+                        <form>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="form-group">
+                                        <label for="">Your Email</label>
+                                        <input class="form-control" placeholder="Enter your email address" type="email" id="emailaddress">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label style="color:#fff">ssss</label>
+                                        <button id="resetPassword" class="btn btn-lg btn-primary">Send</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="onboarding-modal modal fade animated show" id="changePasswordModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-md modal-centered" role="document">
+            <div class="modal-content text-center">
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button"><span class="os-icon os-icon-close"></span></button>
+                <div class="onboarding-side-by-side">
+                   @* <div class="onboarding-media">
+                        <img alt="" src="~/assets/img/admon_bg.jpg" width="200px">
+                    </div>*@
+                    <div class="onboarding-content with-gradient">
+                        <h4 class="onboarding-title">
+                            Change Password
+                        </h4>
+                        <div class="onboarding-text">
+                            Please change your password as the default password cannot be use to perform any task on this system.
+                        </div>
+                        <form>
+                            <input style="margin-left:-999999px" type="hidden" id="hidUserId" value="" />
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">New Password</label>
+                                        <input class="form-control" type="password" id="newPassword">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="">Confirm New Password</label>
+                                        <input class="form-control" type="password" id="confirmNewPassword">
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div style="padding-top:5px" class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-8"></div>
+                                        <div class="col-sm-4">
+                                            <button id="changePassword" class="btn btn-sm btn-primary">
+                                                Change Password
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <script src="~/assets/components/jquery/dist/jquery.min.js"></script>
+    <script src="~/assets/components/bootstrap/js/dist/util.js"></script>
+    <script src="~/assets/components/bootstrap/js/dist/modal.js"></script>
+    <script src="~/assets/js/accounting.min.js" )"></script>
+    <script src="~/assets/js/AppUtils.js" )"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+    <script>
+
+        var redirectUlr = $("#retUrl").val(),
+            landingUrl = "@Url.Action("index","Home",new { area = "" })",
+            loginPostUrl = "@Url.Action("SignIn", "auth",new { area=""})"
+
+
+
+
+        function changePassword(data) {
+            return $.ajax({
+                type: "POST",
+                url: "@Url.Action("ChangePassword", "account",new { area=""})",
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8'
+            });
+        }
+
+        function RequestPasswordReset(data) {
+            return $.ajax({
+                type: "POST",
+                url: "@Url.Action("requestPasswordReset", "account",new { area=""})",
+                data: data,
+                dataType: 'json',
+                contentType: 'application/json;charset=utf-8'
+            });
+        }
+
+        $(function () {
+
+            //$("#changePasswordModal").modal('show');
+
+            $("#forgotPassLing").click(function (e) {
+                e.preventDefault();
+                $("#forgotpasswordModal").modal('show');
+            });
+
+
+            $("#resetPassword").click(function (e) {
+
+                // alert("resetPassword clicked");
+                e.preventDefault();
+
+                return false;
+                var emailAddress = $.trim($("#emailaddress").val());
+
+                if ($.trim(emailAddress) == '') {
+
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: 'Email address is required',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                    return;
+                }
+
+                var $self = $(this);
+                $self.attr('disabled', true).html("Wait ....");
+                var emailAddress = $.trim($("#emailaddress").val());
+
+                var data = JSON.stringify({
+                    email: emailAddress
+                });
+
+                $.when(RequestPasswordReset(data)).then(function (response) {
+                    $self.attr('disabled', false).html("Send");
+                    if (response.error == false) {
+                        $("#emailaddress").val('');
+                        $.confirm({
+                            title: 'Success!',
+                            content: 'Password reset instruction has been sent to your mail,please check your mail',
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    } else {
+
+                        $.confirm({
+                            title: 'Encountered an error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+                    $self.attr('disabled', false).html("Send");
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: 'An unknown error has occured!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                    //bootbox.alert({ message: "An unknown error has occured, please contact the administrator", title: 'Error' });
+                });
+
+            });
+
+
+            $("#changePassword").click(function (e) {
+                e.preventDefault();
+
+                var data = {
+                    password: $("#newPassword").val(),
+                    confirmPassword: $("#confirmNewPassword").val(),
+                    username: $("#hidUserId").val()
+                };
+
+                if ($("#newPassword").val() !== $("#confirmNewPassword").val()){
+                    $.confirm({
+                        title: 'Authentication error!',
+                        content: "Password and confirm password does not match",
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+
+                var _url = '@Url.Action("ChangePassword", "auth",new { area=""})';
+
+                $.when(SiteUtils.postJson(data, _url)).done(function (response) {
+                    if (response.error == false) {
+
+                        $.confirm({
+                            title: 'Success',
+                            content: response.message,
+                            type: 'green',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    } else {
+
+                        $.confirm({
+                            title: 'Authentication error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+                    SiteUtils.loadingOff();
+                    $self.attr('disabled', false).html("Sign in");
+                    $.confirm({
+                        title: 'Authentication error!',
+                        content: 'Wrong username or password!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                });
+
+                
+                
+            })
+
+
+            $(".loginBtn").click(function (e) {
+                e.preventDefault();
+
+
+                if ($.trim($("#username").val()) == '' || $.trim($("#password").val()) == "") {
+
+
+                    $.confirm({
+                        title: 'Encountered an error!',
+                        content: 'All fields are required!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+
+                    return false;
+                }
+
+                var $self = $(this);
+                SiteUtils.loading();
+                $self.attr('disabled', true).html("Wait...");
+                //$("#loadingImg").show();
+
+                var loginData = {
+                    PersistLogin: $("#persistLogin").prop('checked'),
+                    Username: $("#username").val(),
+                    Password: $("#password").val(),
+                };
+
+                $.when(SiteUtils.postJson(loginData, loginPostUrl)).done(function (response) {
+                    if (response.error == false) {
+
+                        if (response.requirePasswordChange == true) {
+                            $self.attr('disabled', false).html("Sign in");
+                            $("#hidUserId").val(response.staffId);
+                            $("#changePasswordModal").modal('show');
+                        } else {
+                            location.href = landingUrl;
+                        }
+
+                    } else {
+
+                        $self.attr('disabled', false).html("Sign in");
+
+                        $.confirm({
+                            title: 'Authentication error!',
+                            content: response.message,
+                            type: 'red',
+                            typeAnimated: true,
+                            buttons: {
+                                close: function () {
+                                }
+                            }
+                        });
+
+                    }
+                }).fail(function (err) {
+
+
+                    SiteUtils.loadingOff();
+                    $self.attr('disabled', false).html("Sign in");
+                    $.confirm({
+                        title: 'Authentication error!',
+                        content: 'Wrong username or password!',
+                        type: 'red',
+                        typeAnimated: true,
+                        buttons: {
+                            close: function () {
+                            }
+                        }
+                    });
+                });
+            });
+
+        });
+
+    </script>
+
+</body>
+
+</html>
